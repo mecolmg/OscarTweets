@@ -27,7 +27,9 @@ with open('states.csv', 'rb') as File:
 
 #Determines Most Tweeted Nominees
 def popularity():
-    nominees = ["American Sniper","Birdman","Boyhood","The Grand Budapest Hotel","The Imitation Game","Selma","The Theory of Everything","Whiplash"]
+    nominees = ["American Sniper","Birdman","Boyhood",
+                "The Grand Budapest Hotel","The Imitation Game",
+                "Selma","The Theory of Everything","Whiplash"]
     count = defaultdict(int)
     for tweet in tweets:
         text = tweet.text.lower()
@@ -35,7 +37,8 @@ def popularity():
             if text.count(nominee.lower().strip('the ')) != 0:
                 count[nominee] += 1
     top = sorted(count.items(),key=lambda x:x[1], reverse=True)
-    data = Data([Bar(x=[data[0] for data in top], y=[data[1] for data in top],
+    data = Data([Bar(x=[data[0] for data in top],
+                     y=[data[1] for data in top],
                      marker=Marker(color='#b09953'))])
     layout = Layout(
         title='Tweets about Best Picture Nominees',
@@ -45,7 +48,7 @@ def popularity():
             color='#000'
         ),
         yaxis=YAxis(title='Number of Tweets')
-        )
+    )
     fig = Figure(data=data,layout=layout)
     plot = py.plot(fig)
     count = 1
@@ -59,19 +62,53 @@ def popularity():
 def winner():
     count = defaultdict(int)
     for tweet in tweets:
-        if len(tweet.timezone) == 0:
-            timezone = 0
-        else:
-            timezone = int(tweet.timezone)/3600            
-        hour = int(tweet.time[11:13])+timezone
+##        if len(tweet.timezone) == 0:
+##            timezone = 0
+##        else:
+##            timezone = int(tweet.timezone)/3600            
+##        hour = (int(tweet.time[11:13])-timezone)% 24
+        hour = int(tweet.time[11:13])
         minute = int(tweet.time[14:16])
         text = tweet.text.lower()
         if text.count('birdman') != 0:
             count[(hour,minute)] += 1
     times = sorted(count.items(),key=lambda x:x[1], reverse=True)
+    x=[data[0][0] for data in times for i in range(data[1])]
+    y=[data[0][1] for data in times for i in range(data[1])]
+    data = Data([
+        Histogram2d(
+            x=x,
+            y=y,
+            autobinx=False,
+            xbins=XBins(
+                start=0.5,
+                end=6.5,
+                size=1
+            ),
+            autobiny=False,
+            ybins=YBins(
+                start=0.5,
+                end=60.5,
+                size=1
+            ),
+            colorscale=[[0, 'rgb(12,51,131)'], [0.25, 'rgb(10,136,186)'], [0.5, 'rgb(242,211,56)'], [0.75, 'rgb(242,143,56)'], [1, 'rgb(217,30,30)']]
+        )
+    ])
+    layout = Layout(
+        title='Times where Birdman is Mentioned<br> (GMT)',
+        font=Font(
+            family='"Open sans", verdana, arial, sans-serif',
+            size=17,
+            color='#000'
+        ),
+        yaxis=YAxis(title='Minute'),
+        xaxis=XAxis(title='Hour')
+    )
+    fig = Figure(data=data,layout=layout)
+    plot = py.plot(fig)
     print("Birdman was mentioned most frequently at:")
     print("\t {:02d}:{:02d} GMT".format((times[0][0][0]-1)%12 +1, times[0][0][1]))
-
+    return [x,y]
 #Determines the top tweeting states in the US
 def location():
     count = defaultdict(int)
@@ -85,4 +122,4 @@ def location():
     for i in range(10):
         print("\t" + str(i+1)+": "+times[i][0])
 
-winner()
+times = winner()
