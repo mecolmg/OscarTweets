@@ -3,6 +3,7 @@ import plotly.plotly as py
 from plotly.graph_objs import *
 from collections import defaultdict
 import plotly.tools as tls
+import random as r
 tls.set_credentials_file(username='mecolmg', api_key='tub4jew75t')
 
 #Contains Tweet Data
@@ -114,12 +115,29 @@ def location():
     count = defaultdict(int)
     for tweet in tweets:
         loc = tweet.usrloc
-        for state in states:
-            if loc.count(state[0]) != 0 or loc.count(state[1]) != 0:
-                count[state[0]] += 1
-    times = sorted(count.items(),key=lambda x:x[1], reverse=True)
+        if len(loc) != 0:
+            for state in states:
+                if loc.count(state[0]) != 0 or loc.count(state[1]) != 0:
+                    count[state[0]] += 1
+    times = sorted(count.items(),key=lambda x:x[1], reverse=True)    
+    x = [state[0] for state in times[:10]]
+    y = [state[1] for state in times[:10]]
+    text = [state[0] for state in times[:10]]
+    data = Data([Bar(x=x,y=y,text=text,marker=Marker(color='#b09953'))])
+    layout = Layout(
+        title='Top Tweeting States',
+        font=Font(
+            family='"Open sans", verdana, arial, sans-serif',
+            size=17,
+            color='#000'
+        ),
+        yaxis=YAxis(title='Number of Tweets Sent')
+    )
+    fig = Figure(data=data,layout=layout)
+    #plot = py.plot(fig, filename='Top Tweeting States')
     print("The top 10 tweeting US states were:")
     for i in range(10):
         print("\t" + str(i+1)+": "+times[i][0])
-
-times = winner()
+    return times
+        
+times = location()
