@@ -11,7 +11,7 @@
 </head>
 
 <body class="gwd-body">
-  <img src="files/Statue2.png" id="statue">
+  <img src="files/Statue.png" id="statue">
   <img src="files/NPH.png" id="nph">
   <section id="top">
     <img src="files/Logo.png" id="logo">
@@ -111,13 +111,6 @@ def location():
     print("The top 10 tweeting US states were:")
     for i in range(10):
         print("\t" + str(i+1)+": "+times[i][0])
-
-#Runs through previous functions to print results
-popularity()
-print
-winner()
-print
-location()
 ]]></script>
       <a href="files/Tweeter.py" id="download">Download</a>
       <div id="button_holder">
@@ -137,9 +130,72 @@ location()
         Problem 1: Popularity Rank
       </h1>
       <p>
-        Here I used the imported data to determine the rank of the most Tweeted about best picture nominees from the night. Running the function <code>popularity()</code> prints the result:
+        Here I used the imported data to determine the rank of the most Tweeted about best picture nominees from the night. 
+        Running the function <code>popularity()</code> prints and graphs the result:
       </p>
-      <code id="result">blah blah blah</code>
+      <script id="#results1" type="syntaxhighlighter" class="brush: py"><![CDATA[
+The Most Tweeted About Best Picture Nominees:
+	1: Birdman
+	2: Selma
+	3: Whiplash
+	4: Boyhood
+	5: The Grand Budapest Hotel
+	6: American Sniper
+	7: The Imitation Game
+	8: The Theory of Everything
+]]></script>
+      <div>
+    	<a href="https://plot.ly/~mecolmg/36/" target="_blank" title="Tweets about Best Picture Nominees" style="display: block; text-align: center;"><img src="https://plot.ly/~mecolmg/36.png" alt="Tweets about Best Picture Nominees" style="max-width: 100%;"  onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
+    	<script data-plotly="mecolmg:36" src="https://plot.ly/embed.js" async></script>
+	  </div>
+
+      <p style="font-size:14px;margin:5px 0 -10px 0;">Click the image for interactive data</p>
+      <div id="button_holder">
+        <a href="#top" title="To Top">
+          <img src="files/UpClear.png" id="arrow_nav">
+        </a>
+        <a href="#p3" title="Continue">
+          <img src="files/DownClear.png" id="arrow_nav">
+        </a>
+      </div>
+    </article>
+  </section>
+  <section id="p3">
+    <br>
+    <div class="clocks" id="clocks1">
+        <iframe scrolling="no" frameborder="no" src="http://www.clocklink.com/html5embed.php?clock=008&timezone=GMT00&color=black&size=227&Title=&Message=&Target=&From=2015,1,1,0,0,0&Color=black"></iframe>
+      	<h1>
+          GMT 00:00
+        </h1>
+        <iframe scrolling="no" frameborder="no" src="http://www.clocklink.com/html5embed.php?clock=008&timezone=EST&color=black&size=227&Title=&Message=&Target=&From=2015,1,1,0,0,0&Color=black"></iframe>
+      	<h1>
+          EST -04:00
+        </h1>
+        <iframe scrolling="no" frameborder="no" src="http://www.clocklink.com/html5embed.php?clock=008&timezone=CST&color=black&size=227&Title=&Message=&Target=&From=2015,1,1,0,0,0&Color=black"></iframe>
+      	<h1>
+          CST -05:00
+        </h1>
+        <iframe scrolling="no" frameborder="no" src="http://www.clocklink.com/html5embed.php?clock=008&timezone=MST&color=black&size=227&Title=&Message=&Target=&From=2015,1,1,0,0,0&Color=black"></iframe>
+      	<h1>
+          MST -06:00
+        </h1>
+        <iframe scrolling="no" frameborder="no" src="http://www.clocklink.com/html5embed.php?clock=008&timezone=PST&color=black&size=227&Title=&Message=&Target=&From=2015,1,1,0,0,0&Color=black"></iframe>
+      	<h1>
+          PST -07:00
+        </h1>
+    </div>
+  	<article>
+      <h1>
+        Problem 2: Winner Announcement Prediction
+      </h1>
+      <p>
+        Here I used the imported data to determine the rank of the most Tweeted about best picture nominees from the night. 
+        Running the function <code>popularity()</code> prints and graphs the result:
+      </p>
+      <script id="#results2" type="syntaxhighlighter" class="brush: py"><![CDATA[
+Birdman was mentioned most frequently at:
+	05:06
+]]></script>
     </article>
   </section>
   <script type="text/javascript">
