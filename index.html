@@ -55,26 +55,40 @@
       <script type="text/javascript" src="files/shBrushPython.js"></script>
       <link href="files/shCore.css" rel="stylesheet" type="text/css">
       <link href="files/shThemeDefault.css" rel="stylesheet" type="text/css">
-      <script id="#code" type="syntaxhighlighter" class="brush: py"><![CDATA[
+      <script id="#code" type="syntaxhighlighter" class="brush: py">
+      	<![CDATA[
 import csv
+import plotly.plotly as py
+from plotly.graph_objs import *
 from collections import defaultdict
+import plotly.tools as tls
+tls.set_credentials_file(username='mecolmg', api_key='tub4jew75t')
 
 #Contains Tweet Data
 class Tweet:
     def __init__(self, data):
-        self.time,self.tweetid,self.text,self.rt,self.geo,self.placetag,self.favs,self.usr,self.usrloc,self.usrid,self.timezone,self.usrfollow,self.usrstats,self.usrfriends,self.usrhandle,self.hashtags,self.mentions = data
+        self.time, self.tweetid, self.text, self.rt, \
+        self.geo, self.placetag, self.favs, self.usr, \
+        self.usrloc, self.usrid, self.timezone, self.usrfollow, \
+        self.usrstats, self.usrfriends, self.usrhandle, \
+        self.hashtags, self.mentions = data
 
-#Imports data to the variable 'tweets'
-with open('oscar_tweets.csv', 'rb') as theFile:
-    theFile = csv.reader(theFile, delimiter=',',quotechar='"')
-    tweets = [Tweet(data) for data in theFile][1:]
-with open('states.csv', 'rb') as theFile:
-    theFile = csv.reader(theFile, delimiter=',',quotechar='"')
-    states = [data for data in theFile]
+#Imports data as Tweet objects to the variable 'tweets'
+with open('oscar_tweets.csv', 'rb') as File:
+    File = csv.reader(File, delimiter=',',quotechar='"')
+    tweets = [Tweet(data) for data in File][1:]
+    
+#Imports a list of states from a CSV file to the variable 'states'
+#For use in location() method
+with open('states.csv', 'rb') as File:
+    File = csv.reader(File, delimiter=',',quotechar='"')
+    states = [data for data in File]
 
 #Determines Most Tweeted Nominees
 def popularity():
-    nominees = ["American Sniper","Birdman","Boyhood","The Grand Budapest Hotel","The Imitation Game","Selma","The Theory of Everything","Whiplash"]
+    nominees = ["American Sniper","Birdman","Boyhood",
+                "The Grand Budapest Hotel","The Imitation Game",
+                "Selma","The Theory of Everything","Whiplash"]
     count = defaultdict(int)
     for tweet in tweets:
         text = tweet.text.lower()
@@ -82,24 +96,78 @@ def popularity():
             if text.count(nominee.lower().strip('the ')) != 0:
                 count[nominee] += 1
     top = sorted(count.items(),key=lambda x:x[1], reverse=True)
+    data = Data([Bar(x=[data[0] for data in top],
+                     y=[data[1] for data in top],
+                     marker=Marker(color='#b09953'))])
+    layout = Layout(
+        title='Tweets about Best Picture Nominees',
+        font=Font(
+            family='"Open sans", verdana, arial, sans-serif',
+            size=17,
+            color='#000'
+        ),
+        yaxis=YAxis(title='Number of Tweets')
+    )
+    fig = Figure(data=data,layout=layout)
+    plot = py.plot(fig)
     count = 1
     print("The Most Tweeted About Best Picture Nominees:")
     for t in top:
         print("\t"+str(count)+": "+t[0])
         count += 1
+    return top
 
 #Determines when Birdman (the winner) was most tweeted about
 def winner():
     count = defaultdict(int)
     for tweet in tweets:
-        time = tweet.time[11:16]
+##        if len(tweet.timezone) == 0:
+##            timezone = 0
+##        else:
+##            timezone = int(tweet.timezone)/3600            
+##        hour = (int(tweet.time[11:13])-timezone)% 24
+        hour = int(tweet.time[11:13])
+        minute = int(tweet.time[14:16])
         text = tweet.text.lower()
         if text.count('birdman') != 0:
-            count[time] += 1
+            count[(hour,minute)] += 1
     times = sorted(count.items(),key=lambda x:x[1], reverse=True)
+    x=[data[0][0] for data in times for i in range(data[1])]
+    y=[data[0][1] for data in times for i in range(data[1])]
+    data = Data([
+        Histogram2d(
+            x=x,
+            y=y,
+            autobinx=False,
+            xbins=XBins(
+                start=0.5,
+                end=6.5,
+                size=1
+            ),
+            autobiny=False,
+            ybins=YBins(
+                start=0.5,
+                end=60.5,
+                size=1
+            ),
+            colorscale=[[0, 'rgb(12,51,131)'], [0.25, 'rgb(10,136,186)'], [0.5, 'rgb(242,211,56)'], [0.75, 'rgb(242,143,56)'], [1, 'rgb(217,30,30)']]
+        )
+    ])
+    layout = Layout(
+        title='Times where Birdman is Mentioned<br> (GMT)',
+        font=Font(
+            family='"Open sans", verdana, arial, sans-serif',
+            size=17,
+            color='#000'
+        ),
+        yaxis=YAxis(title='Minute'),
+        xaxis=XAxis(title='Hour')
+    )
+    fig = Figure(data=data,layout=layout)
+    plot = py.plot(fig)
     print("Birdman was mentioned most frequently at:")
-    print("\t"+times[0][0])
-
+    print("\t {:02d}:{:02d} GMT".format((times[0][0][0]-1)%12 +1, times[0][0][1]))
+    return [x,y]
 #Determines the top tweeting states in the US
 def location():
     count = defaultdict(int)
@@ -112,7 +180,8 @@ def location():
     print("The top 10 tweeting US states were:")
     for i in range(10):
         print("\t" + str(i+1)+": "+times[i][0])
-]]></script>
+]]>
+      </script>
       <a href="files/Tweeter.py" id="download">Download</a>
       <div id="button_holder">
         <a href="#top" title="To Top">
@@ -145,12 +214,7 @@ The Most Tweeted About Best Picture Nominees:
 	7: The Imitation Game
 	8: The Theory of Everything
 ]]></script>
-      <div id="data1">
-    	<a href="https://plot.ly/~mecolmg/36/" target="_blank" title="Tweets about Best Picture Nominees" style="display: block; text-align: center;"><img src="https://plot.ly/~mecolmg/36.png" alt="Tweets about Best Picture Nominees" style="max-width: 100%;"  onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
-    	<script data-plotly="mecolmg:36" src="https://plot.ly/embed.js" async></script>
-	  </div>
-
-      <p style="font-size:14px;margin:5px 0 -10px 0;">Click the image for interactive data</p>
+      <iframe width="100%" height="430" frameborder="0" seamless="seamless" scrolling="no" src="https://plot.ly/~mecolmg/36/tweets-about-best-picture-nominees/" ></iframe>
       <div id="button_holder">
         <a href="#top" title="To Top">
           <img src="files/UpClear.png" id="arrow_nav">
@@ -198,12 +262,7 @@ The Most Tweeted About Best Picture Nominees:
 Birdman was mentioned most frequently at:
 	 12:05 GMT
 ]]></script>
-      <div id="data2">
-    	<a href="https://plot.ly/~mecolmg/71/" target="_blank" title="Times where Birdman is Mentioned&lt;br&gt; (GMT)" style="display: block; text-align: center;">
-          <img src="https://plot.ly/~mecolmg/71.png" alt="Times where Birdman is Mentioned&lt;br&gt; (GMT)" style="width=100% height=430px;"  onerror="this.onerror=null;this.src='https://plot.ly/404.png';" />
-        </a>
-    	<script data-plotly="mecolmg:71" src="https://plot.ly/embed.js" async></script>
-	  </div>
+      <iframe width="100%" height="430" frameborder="0" seamless="seamless" scrolling="no" src="https://plot.ly/~mecolmg/71/times-where-birdman-is-mentioned-gmt/" ></iframe>
 	  <div id="button_holder">
         <a href="#top" title="To Top">
           <img src="files/UpClear.png" id="arrow_nav">
@@ -213,6 +272,14 @@ Birdman was mentioned most frequently at:
         </a>
       </div>
     </article>
+  </section>
+  <section id="p4">
+    <br>
+  	<article>
+        <iframe width="100%" height="430" frameborder="0" seamless="seamless" scrolling="no" src="https://plot.ly/~mecolmg/96/top-tweeting-states/" ></iframe>
+    </article>
+  </section>
+  <section>
   </section>
   <script type="text/javascript">
     SyntaxHighlighter.all()
