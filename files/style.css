@@ -150,4 +150,10 @@ article b, code {
 #p3 .syntaxhighlighter {
   height:40px;
 }
+#data2 a,script,img{
+  height:430px;
+}
+#data1 a,script,img{
+  height:430px;
+}
 
