@@ -127,7 +127,7 @@ article b, code {
 }
 #p3 {
   background:#84221A;
-  z-index:-2;
+  min-height:900px;
 }
 .clocks {
   position: absolute;
@@ -145,7 +145,7 @@ article b, code {
 }
 #clocks1 {
   right:50px;
-  margin-top:10px;
+  margin-top:30px;
 }
 #p3 .syntaxhighlighter {
   height:40px;
