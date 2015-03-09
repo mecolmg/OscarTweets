@@ -59,13 +59,18 @@ def popularity():
 def winner():
     count = defaultdict(int)
     for tweet in tweets:
-        time = tweet.time[11:16]
+        if len(tweet.timezone) == 0:
+            timezone = 0
+        else:
+            timezone = int(tweet.timezone)/3600            
+        hour = int(tweet.time[11:13])+timezone
+        minute = int(tweet.time[14:16])
         text = tweet.text.lower()
         if text.count('birdman') != 0:
-            count[time] += 1
+            count[(hour,minute)] += 1
     times = sorted(count.items(),key=lambda x:x[1], reverse=True)
     print("Birdman was mentioned most frequently at:")
-    print("\t"+times[0][0])
+    print("\t {:02d}:{:02d} GMT".format((times[0][0][0]-1)%12 +1, times[0][0][1]))
 
 #Determines the top tweeting states in the US
 def location():
