@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+<head data-gwd-animation-mode="quickMode">
+  <title>Oscars Tweets</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Google Web Designer 1.2.1.0121">
+  <link rel="stylesheet" type="text/css" href="files/style.css">
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+  <script src="files/scroll.js"></script>
+</head>
+
+<body class="gwd-body">
+  <img src="files/Statue2.png" id="statue">
+  <img src="files/NPH.png" id="nph">
+  <section id="top">
+    <img src="files/Logo.png" id="logo">
+    <a href="#info" title="Continue">
+      <img src="files/Down.png" id="arrow">
+    </a>
+  </section>
+  <section id="info">
+    <br>
+    <article>
+      <h1>The Purpose of This Project:</h1>
+      <p>
+        The 87th Anual Academy Awards were held on February 22nd this year. <b>36.6 Million</b> people tuned in to watch the awards, and during that time period, close to <b>200,000</b> Tweets were sent using the hashtag <b>#Oscars2015</b>.
+      </p>
+      <p>
+        This project is designed to use a <b>CSV</b> file containing information for each of the 200,000 Tweets sent using the hashtag #Oscars2015, and determine trends with that data.
+      </p>
+      <p>
+        For my solution to this problem, I wrote a program in <b>Python</b> that pulls data from the CSV file, and converts it to a
+        <b>Tweet class</b>. Using this class, I write functions that determine different trends from the data.
+      </p>
+      <div id="button_holder">
+        <a href="#top" title="To Top">
+          <img src="files/UpClear.png" id="arrow_nav">
+        </a>
+        <a href="#p1" title="Continue">
+          <img src="files/DownClear.png" id="arrow_nav">
+        </a>
+      </div>
+    </article>
+  </section>
+  <section id="p1">
+    <br>
+    <article>
+      <h1>
+        The Code:
+      </h1>
+      <!-- This is for displaying code -->
+      <script type="text/javascript" src="files/shCore.js"></script>
+      <script type="text/javascript" src="files/shBrushPython.js"></script>
+      <link href="files/shCore.css" rel="stylesheet" type="text/css">
+      <link href="files/shThemeDefault.css" rel="stylesheet" type="text/css">
+      <script id="#code" type="syntaxhighlighter" class="brush: py"><![CDATA[
+import csv
+from collections import defaultdict
+
+#Contains Tweet Data
+class Tweet:
+    def __init__(self, data):
+        self.time,self.tweetid,self.text,self.rt,self.geo,self.placetag,self.favs,self.usr,self.usrloc,self.usrid,self.timezone,self.usrfollow,self.usrstats,self.usrfriends,self.usrhandle,self.hashtags,self.mentions = data
+
+#Imports data to the variable 'tweets'
+with open('oscar_tweets.csv', 'rb') as theFile:
+    theFile = csv.reader(theFile, delimiter=',',quotechar='"')
+    tweets = [Tweet(data) for data in theFile][1:]
+with open('states.csv', 'rb') as theFile:
+    theFile = csv.reader(theFile, delimiter=',',quotechar='"')
+    states = [data for data in theFile]
+
+#Determines Most Tweeted Nominees
+def popularity():
+    nominees = ["American Sniper","Birdman","Boyhood","The Grand Budapest Hotel","The Imitation Game","Selma","The Theory of Everything","Whiplash"]
+    count = defaultdict(int)
+    for tweet in tweets:
+        text = tweet.text.lower()
+        for nominee in nominees:
+            if text.count(nominee.lower().strip('the ')) != 0:
+                count[nominee] += 1
+    top = sorted(count.items(),key=lambda x:x[1], reverse=True)
+    count = 1
+    print("The Most Tweeted About Best Picture Nominees:")
+    for t in top:
+        print("\t"+str(count)+": "+t[0])
+        count += 1
+
+#Determines when Birdman (the winner) was most tweeted about
+def winner():
+    count = defaultdict(int)
+    for tweet in tweets:
+        time = tweet.time[11:16]
+        text = tweet.text.lower()
+        if text.count('birdman') != 0:
+            count[time] += 1
+    times = sorted(count.items(),key=lambda x:x[1], reverse=True)
+    print("Birdman was mentioned most frequently at:")
+    print("\t"+times[0][0])
+
+#Determines the top tweeting states in the US
+def location():
+    count = defaultdict(int)
+    for tweet in tweets:
+        loc = tweet.usrloc
+        for state in states:
+            if loc.count(state[0]) != 0 or loc.count(state[1]) != 0:
+                count[state[0]] += 1
+    times = sorted(count.items(),key=lambda x:x[1], reverse=True)
+    print("The top 10 tweeting US states were:")
+    for i in range(10):
+        print("\t" + str(i+1)+": "+times[i][0])
+
+#Runs through previous functions to print results
+popularity()
+print
+winner()
+print
+location()
+]]></script>
+      <a href="files/Tweeter.py" id="download">Download</a>
+      <div id="button_holder">
+        <a href="#top" title="To Top">
+          <img src="files/UpClear.png" id="arrow_nav">
+        </a>
+        <a href="#p2" title="Continue">
+          <img src="files/DownClear.png" id="arrow_nav">
+        </a>
+      </div>
+    </article>
+  </section>
+  <section id="p2">
+    <br>
+    <article>
+      <h1>
+        Problem 1: Popularity Rank
+      </h1>
+      <p>
+        Here I used the imported data to determine the rank of the most Tweeted about best picture nominees from the night. Running the function <code>popularity()</code> prints the result:
+      </p>
+      <code id="result">blah blah blah</code>
+    </article>
+  </section>
+  <script type="text/javascript">
+    SyntaxHighlighter.all()
+  </script>
+</body>
+
+</html>
