@@ -2,7 +2,7 @@ html, body {
   width: 100%;
   height: 100%;
   margin: 0px;
-  min-width:900px;
+  min-width:1250px;
 }
 body {
   background-color: rgb(0, 0, 0);
@@ -151,7 +151,7 @@ article b, i, code {
   height:40px;
 }
 #p4 {
-  background:#ccc;
+  background:#aaa;
   background-image: url('TranStates.png');
   background-size: 100% 100%;
   min-height:1050px;
@@ -166,4 +166,6 @@ article b, i, code {
   margin: 20px 0 0 -50px;
   display: block;
 }
-
+#p5 {
+  background: black;
+}
