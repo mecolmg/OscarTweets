@@ -2,11 +2,8 @@ import csv
 import plotly.plotly as py
 from plotly.graph_objs import *
 from collections import defaultdict
-import plotly.tools as tls
-import random as r
-tls.set_credentials_file(username='mecolmg', api_key='tub4jew75t')
 
-#Contains Tweet Data
+#Contains Tweet Data, accesed by (...).value
 class Tweet:
     def __init__(self, data):
         self.time, self.tweetid, self.text, self.rt, \
@@ -21,10 +18,12 @@ with open('oscar_tweets.csv', 'rb') as File:
     tweets = [Tweet(data) for data in File][1:]
     
 #Imports a list of states from a CSV file to the variable 'states'
-#For use in location() method
+#For use in location() function
 with open('states.csv', 'rb') as File:
     File = csv.reader(File, delimiter=',',quotechar='"')
     states = [data for data in File]
+
+####Functions####
 
 #Determines Most Tweeted Nominees
 def popularity():
@@ -38,6 +37,15 @@ def popularity():
             if text.count(nominee.lower().strip('the ')) != 0:
                 count[nominee] += 1
     top = sorted(count.items(),key=lambda x:x[1], reverse=True)
+
+    #Prints out results
+    count = 1
+    print("The Most Tweeted About Best Picture Nominees:")
+    for t in top:
+        print("\t"+str(count)+": "+t[0])
+        count += 1
+
+    #Graphs results
     data = Data([Bar(x=[data[0] for data in top],
                      y=[data[1] for data in top],
                      marker=Marker(color='#b09953'))])
@@ -52,28 +60,23 @@ def popularity():
     )
     fig = Figure(data=data,layout=layout)
     plot = py.plot(fig)
-    count = 1
-    print("The Most Tweeted About Best Picture Nominees:")
-    for t in top:
-        print("\t"+str(count)+": "+t[0])
-        count += 1
-    return top
-
+    
 #Determines when Birdman (the winner) was most tweeted about
 def winner():
     count = defaultdict(int)
     for tweet in tweets:
-##        if len(tweet.timezone) == 0:
-##            timezone = 0
-##        else:
-##            timezone = int(tweet.timezone)/3600            
-##        hour = (int(tweet.time[11:13])-timezone)% 24
         hour = int(tweet.time[11:13])
         minute = int(tweet.time[14:16])
         text = tweet.text.lower()
         if text.count('birdman') != 0:
             count[(hour,minute)] += 1
     times = sorted(count.items(),key=lambda x:x[1], reverse=True)
+
+    #Prints results
+    print("Birdman was mentioned most frequently at:")
+    print("\t {:02d}:{:02d} GMT".format((times[0][0][0]-1)%12 +1, times[0][0][1]))
+
+    #Graphs results
     x=[data[0][0] for data in times for i in range(data[1])]
     y=[data[0][1] for data in times for i in range(data[1])]
     data = Data([
@@ -107,9 +110,7 @@ def winner():
     )
     fig = Figure(data=data,layout=layout)
     plot = py.plot(fig)
-    print("Birdman was mentioned most frequently at:")
-    print("\t {:02d}:{:02d} GMT".format((times[0][0][0]-1)%12 +1, times[0][0][1]))
-    return [x,y]
+
 #Determines the top tweeting states in the US
 def location():
     count = defaultdict(int)
@@ -120,6 +121,13 @@ def location():
                 if loc.count(state[0]) != 0 or loc.count(state[1]) != 0:
                     count[state[0]] += 1
     times = sorted(count.items(),key=lambda x:x[1], reverse=True)    
+
+    #Prints results
+    print("The top 10 tweeting US states were:")
+    for i in range(10):
+        print("\t" + str(i+1)+": "+times[i][0])
+
+    #Graphs results
     x = [state[0] for state in times[:10]]
     y = [state[1] for state in times[:10]]
     text = [state[0] for state in times[:10]]
@@ -135,9 +143,3 @@ def location():
     )
     fig = Figure(data=data,layout=layout)
     plot = py.plot(fig, filename='Top Tweeting States')
-    print("The top 10 tweeting US states were:")
-    for i in range(10):
-        print("\t" + str(i+1)+": "+times[i][0])
-    return times
-        
-times = location()

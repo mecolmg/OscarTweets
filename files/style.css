@@ -72,7 +72,7 @@ section {
 }
 
 #info {
-  min-height:595px;
+  min-height:670px;
 }
 article {
   padding:10px;
@@ -90,7 +90,7 @@ article h1 {
 article p {
   padding: -10px 15px 0 15px;
 }
-article b, code {
+article b, i, code {
   color: #ec3d2f;
 }
 #button_holder {
@@ -152,5 +152,16 @@ article b, code {
 }
 #p4 {
   background:black;
+  min-height:1050px;
+}
+#p4 .syntaxhighlighter {
+  height:190px;
+}
+#p4 #button_holder {
+  position: relative;
+  width:100px;
+  left:50%;
+  margin: 20px 0 0 -50px;
+  display: block;
 }
 
