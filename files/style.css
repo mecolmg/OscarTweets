@@ -161,7 +161,12 @@ article b, i, code {
 }
 #p5 {
   background: black;
+  min-height: 1020px;
 }
 #p5 .syntaxhighlighter {
   height:140px;
+}
+#p5 #button_holder {
+  width:100px;
+  margin: 20px 0 0 -50px;
 }
