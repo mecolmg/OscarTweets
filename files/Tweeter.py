@@ -1,3 +1,7 @@
+#Author: Colm Gallagher
+#Date: 3/11/2015
+#Project: Oscar Tweets
+
 import csv
 import plotly.plotly as py
 from plotly.graph_objs import *
@@ -155,9 +159,9 @@ def topRT():
         if trt > toprt:
             toprt = trt
             topTweet = tweet
+            
+    #Prints results
     print("The top tweet was:")
     print("\n{:s}".format(topTweet.text))
     print("\nWith {:s} retweets".format(topTweet.rt))
     print("URL: http://twitter.com/{:s}/status/{:s}".format(topTweet.usrhandle, topTweet.tweetid))
-
-topRT()
