@@ -165,8 +165,3 @@ article b, i, code {
 #p5 .syntaxhighlighter {
   height:140px;
 }
-blockquote.twitter-tweet {
-  position:relative !important;
-  width:500px !important;
-  padding:50px;
-}
