@@ -160,8 +160,7 @@ article b, i, code {
   height:190px;
 }
 #p5 {
-  background: black;
-  min-height: 1020px;
+  min-height: 1100px;
 }
 #p5 .syntaxhighlighter {
   height:140px;
