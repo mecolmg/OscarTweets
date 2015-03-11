@@ -2,7 +2,7 @@ html, body {
   width: 100%;
   height: 100%;
   margin: 0px;
-  min-width:900px;
+  min-width:1250px;
 }
 body {
   background-color: rgb(0, 0, 0);
@@ -27,6 +27,25 @@ h1 {
 section {
   height:100%;
   width:100%;
+}
+article {
+  padding:10px;
+  position: relative;
+  width:600px;
+  left: 50%;
+  margin: 30px 0 0 -300px;
+  background:#222;
+  border:2px #b09953 solid;
+  outline: 10px #222 solid;
+}
+article h1 {
+  margin-top:10px;
+}
+article p {
+  padding: -10px 15px 0 15px;
+}
+article b, i, code {
+  color: #ec3d2f;
 }
 #top {
   min-height:532px;
@@ -74,25 +93,7 @@ section {
 #info {
   min-height:670px;
 }
-article {
-  padding:10px;
-  position: relative;
-  width:600px;
-  left: 50%;
-  margin: 30px 0 0 -300px;
-  background:#222;
-  border:2px #b09953 solid;
-  outline: 10px #222 solid;
-}
-article h1 {
-  margin-top:10px;
-}
-article p {
-  padding: -10px 15px 0 15px;
-}
-article b, i, code {
-  color: #ec3d2f;
-}
+
 #button_holder {
   position: relative;
   width:200px;
@@ -151,17 +152,43 @@ article b, i, code {
   height:40px;
 }
 #p4 {
-  background:black;
+  background:#aaa;
+  background-image: url('TranStates.png');
+  background-size: 100% 100%;
   min-height:1050px;
 }
 #p4 .syntaxhighlighter {
   height:190px;
 }
-#p4 #button_holder {
-  position: relative;
-  width:100px;
-  left:50%;
-  margin: 20px 0 0 -50px;
-  display: block;
+#p5 {
+  min-height: 1100px;
 }
-
+#p5 .syntaxhighlighter {
+  height:140px;
+}
+#p5 #button_holder {
+  width:100px;
+  margin: 20px 0 0 -50px;
+}
+#close {
+  height:100px;
+  background:#84221A;
+  margin-bottom: 50px;
+}
+#close article {
+  padding:10px;
+  position: relative;
+  width:800px;
+  left: 50%;
+  margin: 30px 0 0 -400px;
+  background: none;
+  border:none;
+  outline:none;
+  color:white;
+  text-align: center;
+  font-family: arial;
+  font-size: 23px;
+}
+#close article a{
+  color: #b09953;
+}

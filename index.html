@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html>
 
-<head data-gwd-animation-mode="quickMode">
+<head>
+  <meta name="author" content="Colm Gallagher">
   <title>Oscars Tweets</title>
   <link rel="shortcut icon" href="files/Icon.png">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta name="generator" content="Google Web Designer 1.2.1.0121">
   <link rel="stylesheet" type="text/css" href="files/style.css">
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
   <script src="files/scroll.js"></script>
 </head>
 
-<body class="gwd-body">
+<body>
   <img src="files/Statue.png" id="statue">
   <img src="files/NPH.png" id="nph">
   <section id="top">
@@ -25,15 +25,12 @@
     <article>
       <h1>The Purpose of This Project:</h1>
       <p>
-        The 87th Anual Academy Awards were held on February 22nd this year. <b>36.6 Million</b> people tuned in 
-        to watch the awards, and during that time period, close to <b>200,000</b> Tweets were sent using the 
-        hashtag <b>#Oscars2015</b>.
+        The 87th Anual Academy Awards were held on February 22nd this year. <b>36.6 Million</b> people tuned in to watch the awards, and during that time period, close to <b>200,000</b> Tweets were sent using the hashtag <b>#Oscars2015</b>.
       </p>
       <p>
-        This project is an application for <i>Capital One's Summit for Software Engineers</i>. 
-        <a href="https://www.mindsumo.com/contests/351">This MindSumo Page</a> describes the qualifications for
-        the project. In short, the project is designed to use a <b>CSV</b> file containing information for each 
-        of the 200,000 Tweets sent using the hashtag #Oscars2015, and determine trends with that data.
+        This project is an application for <i>Capital One's Summit for Software Engineers</i>.
+        <a href="https://www.mindsumo.com/contests/351">This MindSumo Page</a> describes the qualifications for the project. In short, the project is designed to use a <b>CSV</b> file containing information for each of the 200,000 Tweets sent using the hashtag
+        #Oscars2015, and determine trends with that data.
       </p>
       <p>
         For my solution to this problem, I wrote a program in <b>Python</b> that pulls data from the CSV file, and converts it to a
@@ -61,6 +58,10 @@
       <link href="files/shCore.css" rel="stylesheet" type="text/css">
       <link href="files/shThemeDefault.css" rel="stylesheet" type="text/css">
       <script id="#code" type="syntaxhighlighter" class="brush: py"><![CDATA[
+#Author: Colm Gallagher
+#Date: 3/11/2015
+#Project: Oscar Tweets
+
 import csv
 import plotly.plotly as py
 from plotly.graph_objs import *
@@ -206,6 +207,24 @@ def location():
     )
     fig = Figure(data=data,layout=layout)
     plot = py.plot(fig, filename='Top Tweeting States')
+
+#### Additional Functions ####
+
+#Returns inforomation on the most retweeted Tweet of the night
+def topRT():
+    toprt = 0
+    topTweet = tweets[0]
+    for tweet in tweets:
+        trt = int(tweet.rt)
+        if trt > toprt:
+            toprt = trt
+            topTweet = tweet
+            
+    #Prints results
+    print("The top tweet was:")
+    print("\n{:s}".format(topTweet.text))
+    print("\nWith {:s} retweets".format(topTweet.rt))
+    print("URL: http://twitter.com/{:s}/status/{:s}".format(topTweet.usrhandle, topTweet.tweetid))
 ]]></script>
       <a href="files/Tweeter.py" id="download">Download</a>
       <div id="button_holder">
@@ -296,19 +315,14 @@ Birdman was mentioned most frequently at:
       </div>
     </article>
   </section>
-  <script type="text/javascript">
-    SyntaxHighlighter.all()
-  </script>
   <section id="p4">
     <br>
-  	<article>
+    <article>
       <h1>
         Problem 3: Location
       </h1>
       <p>
-        Here I used the data given, and parsed it for information each Tweet's location. I then used that information
-        to determine the top 10 Tweeting US States during the awards. The function <code>location()</code> prints and
-        graphs the following result:
+        Here I used the data given, and parsed it for information each Tweet's location. I then used that information to determine the top 10 Tweeting US States during the awards. The function <code>location()</code> prints and graphs the following result:
       </p>
       <script id="#results2" type="syntaxhighlighter" class="brush: py"><![CDATA[
 The top 10 tweeting US states were:
@@ -328,12 +342,52 @@ The top 10 tweeting US states were:
         <a href="#top" title="To Top">
           <img src="files/UpClear.png" id="arrow_nav">
         </a>
-        <!--<a href="#p3" title="Continue">
+        <a href="#p5" title="Continue">
           <img src="files/DownClear.png" id="arrow_nav">
-        </a>-->
+        </a>
+      </div>
+    </article>
+  </section>  
+  <section id="p5">
+    <br>
+    <article>
+      <h1>Additional Data Trends:</h1>
+      <p>
+        The most interesting piece of data I found was the most retweeted Tweet of the night.
+        It surprisingly had little to do with the Oscars themselves, but caught the world's attention
+        nonetheless. Running the function <code>topRT()</code> returns a link to the top retweeted post
+        of the night.
+      </p>
+      <script id="#results2" type="syntaxhighlighter" class="brush: py"><![CDATA[
+The top tweet was:
+
+RT @NASA: .@Interstellar won #Oscars2015 for visual effects. Here's a visual of Earth. No effects. https://t.co/5V55bJ2e5D http://t.co/ekQOâ€¦
+
+With 15392 retweets
+URL: http://twitter.com/christinajoyyy/status/569730327557459970
+]]></script>
+      <blockquote class="twitter-tweet tw-align center" align="center" position="relative" lang="en"><p>.<a href="https://twitter.com/Interstellar">@Interstellar</a> won <a href="https://twitter.com/hashtag/Oscars2015?src=hash">#Oscars2015</a> for visual effects. Here&#39;s a visual of Earth. No effects. <a href="https://t.co/5V55bJ2e5D">https://t.co/5V55bJ2e5D</a> <a href="http://t.co/ekQOsdgG26">pic.twitter.com/ekQOsdgG26</a></p>&mdash; NASA (@NASA) <a href="https://twitter.com/NASA/status/569729482535374849">February 23, 2015</a></blockquote>
+      <script async src="//platform.twitter.com/widgets.js?width:100%" charset="utf-8"></script>
+      <div id="button_holder">
+        <a href="#top" title="To Top">
+          <img src="files/UpClear.png" id="arrow_nav">
+        </a>
+        <!--<a href="#p5" title="Continue">
+          <img src="files/DownClear.png" id="arrow_nav">-->
+        </a>
       </div>
     </article>
   </section>
+  <section id="close">
+    <article>
+      Hello, I am Colm Gallagher, and I would personally like to thank you for taking the time to look at
+      my project. To learn more about me, or see what I'm up to, check out my 
+      <a href="http://mecolmg.weebly.com/">Website</a> or <a href="http://github.com/mecolmg">GitHub Page.</a>
+    </article>
+  </section>
+  <script type="text/javascript">
+     SyntaxHighlighter.all()
+  </script>
 </body>
 
 </html>
