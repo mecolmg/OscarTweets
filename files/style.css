@@ -159,13 +159,9 @@ article b, i, code {
 #p4 .syntaxhighlighter {
   height:190px;
 }
-#p4 #button_holder {
-  position: relative;
-  width:100px;
-  left:50%;
-  margin: 20px 0 0 -50px;
-  display: block;
-}
 #p5 {
   background: black;
+}
+#p5 .syntaxhighlighter {
+  height:140px;
 }
