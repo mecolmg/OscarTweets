@@ -143,3 +143,21 @@ def location():
     )
     fig = Figure(data=data,layout=layout)
     plot = py.plot(fig, filename='Top Tweeting States')
+
+#### Additional Functions ####
+
+#Returns inforomation on the most retweeted Tweet of the night
+def topRT():
+    toprt = 0
+    topTweet = tweets[0]
+    for tweet in tweets:
+        trt = int(tweet.rt)
+        if trt > toprt:
+            toprt = trt
+            topTweet = tweet
+    print("The top tweet was:")
+    print("\n{:s}".format(topTweet.text))
+    print("\nWith {:s} retweets".format(topTweet.rt))
+    print("URL: http://twitter.com/{:s}/status/{:s}".format(topTweet.usrhandle, topTweet.tweetid))
+
+topRT()
